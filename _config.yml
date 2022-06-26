@@ -16,14 +16,14 @@ minimal_mistakes_skin: "plum" #"plum", "default" "air", "aqua", "contrast", "dar
 
 # Site Settings
 locale: "ko-KR" #"en-US"
-title: "choiiis Devlog"
+title: "devbelly Devlog"
 title_separator: "&#124;"
 subtitle: # site tagline that appears below site title in masthead
-name: "choiiis"
-description: "choiiis DevLog"
-url: "https://choiiis.github.io"
+name: "devbelly"
+description: "devbelly DevLog"
+url: "https://devbelly.github.io"
 baseurl: # the subpath of your site, e.g. "/blog"
-repository: "choiiis/choiiis.github.io"
+repository: "devbelly/devbelly.github.io"
 teaser: #
 # logo                     : "/assets/images/meee.svg"
 #"/assets/images/monster.png"
@@ -95,11 +95,11 @@ analytics:
 
 # Site Author
 author:
-  name: "choiiis"
+  name: "devbelly"
   avatar: "/assets/images/meee.svg"
   #   bio              : "Hamppiness!"
   # location         : "Seoul, Korea"
-  # email            : "bemychoiiis@gmail.com"
+  # email            : "devbelly@naver.com"
   links:
 #     - label: "Email"
 #       icon: "fas fa-fw fa-envelope-square"
@@ -115,10 +115,10 @@ author:
 #       # url: "https://facebook.com/"
 # - label: "GitHub"
 #   icon: "fab fa-fw fa-github"
-#   url: "https://github.com/choiiis"
+#   url: "https://github.com/devbelly"
 # - label: "Instagram"
 #   icon: "fab fa-fw fa-instagram"
-#   url: "https://www.instagram.com/choiiis.dev/"
+#   url: "https://www.instagram.com/devbelly.dev/"
 
 # Site Footer
 footer:
