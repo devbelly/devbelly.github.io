@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 2차원 공간에 여러 particle들이 주어졌을 때, 상호작용 후 최소한의 particle의 수를 묻고 있습니다. 상호작용의 조건은 $x1\leq x2,\,  y1\leq y2$ 을 만족해야합니다.

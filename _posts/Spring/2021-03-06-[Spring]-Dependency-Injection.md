@@ -3,7 +3,6 @@ title: "[Spring] Dependency Injection"
 tags: spring
 categories:
   - Spring
-use_math: true
 ---
 
 ### Dependency

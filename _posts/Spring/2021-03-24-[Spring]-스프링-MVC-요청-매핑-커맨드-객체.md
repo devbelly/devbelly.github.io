@@ -3,7 +3,6 @@ title: "[Spring] 스프링 MVC : 요청 매핑, 커맨드 객체"
 tags: spring
 categories:
   - Spring
-use_math: true
 ---
 
 ### 요청 매핑

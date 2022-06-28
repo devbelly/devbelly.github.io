@@ -3,7 +3,6 @@ title: "[백준 5867] Scrambled Letters"
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 뒤섞인 문장의 가능한 높은 등수와 낮은 등수를 찾는 문제입니다.

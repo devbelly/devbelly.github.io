@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 소들이 $M$ step을 $K$번 반복했을 때, 최종적인 소의 배치를 구하는 문제입니다.

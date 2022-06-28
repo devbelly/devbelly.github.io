@@ -3,7 +3,6 @@ title: "[백준 20648] Rectangular Pasture"
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 $N$개의 소들의 좌표가 주어질 때, 직사각형 울타리로 가둘 수 있는 소들의 집합의 수를 구하는 문제입니다.

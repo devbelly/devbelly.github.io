@@ -3,7 +3,6 @@ title: "[Spring Boot] Querydsl, 양방향 다대일 매핑"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### Querydsl

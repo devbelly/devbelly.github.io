@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 $N$명의 라이프가드가 있습니다. 한 명을 해고했을 때, 가장 긴 시간을 커버하도록 해야 합니다.

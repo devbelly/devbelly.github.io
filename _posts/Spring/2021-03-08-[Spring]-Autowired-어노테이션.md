@@ -3,7 +3,6 @@ title: "[Spring] Autowired 어노테이션"
 tags: spring
 categories:
   - Spring
-use_math: true
 ---
 
 ### @Autowired at field

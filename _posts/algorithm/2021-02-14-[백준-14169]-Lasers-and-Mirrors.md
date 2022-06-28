@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 레이저를 시작점에서 농장까지 비추도록 거울을 설치해야 합니다. 이때 필요한 최소의 거울 수를 묻고 있습니다.

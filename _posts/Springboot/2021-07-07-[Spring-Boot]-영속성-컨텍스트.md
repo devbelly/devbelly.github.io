@@ -3,7 +3,6 @@ title: "[Spring Boot] 영속성 컨텍스트"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### 영속성 컨텍스트

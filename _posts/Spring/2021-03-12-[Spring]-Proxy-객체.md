@@ -3,7 +3,6 @@ title: "[Spring] Proxy 객체"
 tags: spring
 categories:
   - Spring
-use_math: true
 ---
 
 ### AOP를 위한 모듈 추가

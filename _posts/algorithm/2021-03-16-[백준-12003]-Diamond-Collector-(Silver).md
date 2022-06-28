@@ -3,7 +3,6 @@ title: "[백준 12003] Diamond Collector (Silver)"
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 두 개의 진열장에 다이아몬드를 진열하려 합니다. 같은 진열장 내에 있는 다이아몬드들은 그 크기의 차이가 $K$이하일 때만 진열이 가능합니다. 이러한 조건에서 진열할 수 있는 다이아몬드의 최대 갯수를 구하는 문제입니다.

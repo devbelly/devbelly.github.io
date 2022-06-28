@@ -3,7 +3,6 @@ title: "[Spring Boot] 로깅 / 빌드"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### 스프링 부트 로깅

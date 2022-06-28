@@ -3,7 +3,6 @@ title: "[백준 9869] Milk Scheduling"
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 소마다 우유생산량과 수명이 주어질 때, 최대 우유생산량을 구하는 문제입니다.

@@ -3,7 +3,6 @@ title: "[Spring] 스프링 MVC : 메세지"
 tags: spring
 categories:
   - Spring
-use_math: true
 ---
 
 ### <spring:message>

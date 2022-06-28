@@ -3,7 +3,6 @@ title: "[Spring Boot] JPA"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### 데이터베이스 연동

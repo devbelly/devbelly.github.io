@@ -3,7 +3,6 @@ title: "[Spring] 스프링 MVC : 날짜 값 변환,@PathVariable, 익셉션 처�
 tags: spring
 categories:
   - Spring
-use_math: true
 ---
 
 ### 날짜 값 변환

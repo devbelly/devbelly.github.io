@@ -3,7 +3,6 @@ title: "[Spring Boot] 스프링 데이터 JPA"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### Repository

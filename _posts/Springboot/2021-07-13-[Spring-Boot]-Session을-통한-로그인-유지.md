@@ -3,7 +3,6 @@ title: "[Spring Boot] Session을 통한 로그인 유지"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### 로그인 인증

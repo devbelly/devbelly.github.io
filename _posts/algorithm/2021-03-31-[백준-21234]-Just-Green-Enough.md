@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 N \* N 사각형안에 값들이 주어집니다. 부분 직사각형안에 최솟값이 100이 될 수 있는 직사각형의 갯수를 구하는 문제입니다.

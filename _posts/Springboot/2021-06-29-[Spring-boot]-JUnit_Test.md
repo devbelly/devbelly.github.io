@@ -3,7 +3,6 @@ title: "[Spring Boot] JUnit Test"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### 스프링부트 테스트

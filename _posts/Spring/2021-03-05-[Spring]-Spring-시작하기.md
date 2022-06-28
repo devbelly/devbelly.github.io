@@ -3,7 +3,6 @@ title: "[Spring] Spring 시작하기"
 tags: spring
 categories:
   - Spring
-use_math: true
 ---
 
 ### Maven

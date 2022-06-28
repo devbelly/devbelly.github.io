@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 Bessie가 트리 형태의 목장에서 탈출하려 합니다. 이때 이 탈출을 제지해야하는 최소의 농부 수를 구하는 문제입니다. 탈출구는 리프노드입니다.

@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 $K$번 겹치는 선분의 길이를 구하는 문제입니다.

@@ -3,7 +3,6 @@ title: "[Spring Boot] Spring Boot 시작하기"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### WebApplicationType

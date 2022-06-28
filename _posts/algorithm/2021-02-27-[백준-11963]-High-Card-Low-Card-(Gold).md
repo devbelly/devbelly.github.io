@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 2$N$개의 카드를 나누어 가져 게임을 진행할 때, 얻을 수 있는 최대 점수를 구하는 문제입니다. $N$/2 이전 라운드는 큰 수를 내는 사람이 이기고, 이후 라운드는 작은 수를 내는 사람이 이깁니다.

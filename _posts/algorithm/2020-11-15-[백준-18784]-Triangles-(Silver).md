@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 $N$개의 좌표가 주어질 때, 3개를 골라 만들 수 있는 삼각형의 넓이의 총 합 \* 2을 구하는 문제입니다. 단, 만든 삼각형은 X, Y축에 평행하는 변이 존재해야합니다.

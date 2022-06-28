@@ -3,7 +3,6 @@ title: "[C++] namespace"
 tags: c++
 categories:
   - C/C++
-use_math: true
 ---
 
 ### 선언 영역

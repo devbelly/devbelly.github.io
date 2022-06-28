@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 헛간을 하나씩 닫아나갈 때 마다, 열린 헛간들의 연결성을 확인하는 문제입니다. 헛간을 닫을 때, 인접한 경로 또한 사라집니다.

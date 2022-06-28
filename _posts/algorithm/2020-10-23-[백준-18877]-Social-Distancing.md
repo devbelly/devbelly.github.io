@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 COWVID-19의 영향으로 사회적 거리두기를 실천하는 소들의 수가 주어집니다. 목초지의 범위가 주어지고 해당 범위안에 소를 배치하되, 가장 가까운 소의 거리가 최대가 되도록 하는 문제입니다.

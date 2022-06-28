@@ -3,7 +3,6 @@ title:
 tags: baekjoon
 categories:
   - Algorithm
-use_math: true
 ---
 
 $N$개의 사각형이 주어졌을 때, $K$번 겹치는 사각형들의 넓이의 합을 구하는 문제입니다.

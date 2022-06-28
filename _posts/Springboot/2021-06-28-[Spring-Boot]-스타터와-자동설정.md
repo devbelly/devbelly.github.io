@@ -3,7 +3,6 @@ title: "[Spring Boot] 스타터와 자동설정"
 tags: springboot
 categories:
   - Spring boot
-use_math: true
 ---
 
 ### 스타터 이해하기

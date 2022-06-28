@@ -3,7 +3,6 @@ title: "[Spring] 스프링 MVC : Validation"
 tags: spring
 categories:
   - Spring
-use_math: true
 ---
 
 ### Validator
