@@ -96,7 +96,7 @@ analytics:
 # Site Author
 author:
   name: "devbelly"
-  avatar: "/assets/images/meee.svg"
+  avatar: "/assets/images/my.svg"
   #   bio              : "Hamppiness!"
   # location         : "Seoul, Korea"
   # email            : "devbelly@naver.com"
@@ -183,7 +183,7 @@ markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 markdown: kramdown
 highlighter: rouge
 lsi: false
-excerpt_separator: "\n\n"
+# excerpt_separator: "\n\n"
 incremental: false
 
 # Markdown Processing

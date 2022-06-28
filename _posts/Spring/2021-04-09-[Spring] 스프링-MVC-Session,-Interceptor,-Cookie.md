@@ -1,7 +1,8 @@
 ---
 title: "[Spring] 스프링 MVC : Session, Interceptor, Cookie"
 tags: spring
-categories: spring
+categories:
+  - Spring
 use_math: true
 ---
 

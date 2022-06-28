@@ -1,7 +1,8 @@
 ---
 title: "[Spring] @Transactional을 통한 트랜잭션 처리"
 tags: spring
-categories: spring
+categories:
+  - Spring
 use_math: true
 ---
 

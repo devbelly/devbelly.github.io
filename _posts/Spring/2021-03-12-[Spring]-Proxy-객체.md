@@ -1,7 +1,8 @@
 ---
 title: "[Spring] Proxy 객체"
 tags: spring
-categories: spring
+categories:
+  - Spring
 use_math: true
 ---
 

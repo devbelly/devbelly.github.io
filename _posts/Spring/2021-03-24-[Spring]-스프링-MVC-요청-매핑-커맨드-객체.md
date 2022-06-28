@@ -1,7 +1,8 @@
 ---
 title: "[Spring] 스프링 MVC : 요청 매핑, 커맨드 객체"
 tags: spring
-categories: spring
+categories:
+  - Spring
 use_math: true
 ---
 

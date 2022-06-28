@@ -1,7 +1,8 @@
 ---
 title: "[Spring] Container의 사용"
 tags: spring
-categories: spring
+categories:
+  - Spring
 use_math: true
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: "[Spring] Dependency Injection"
 tags: spring
-categories: spring
+categories:
+  - Spring
 use_math: true
 ---
 

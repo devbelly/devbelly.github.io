@@ -1,7 +1,8 @@
 ---
 title: "[Spring Boot] 스타터와 자동설정"
 tags: springboot
-categories: springboot
+categories:
+  - Spring boot
 use_math: true
 ---
 

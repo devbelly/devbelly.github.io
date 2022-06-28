@@ -1,7 +1,8 @@
 ---
 title: "[Spring] 스프링 MVC 시작하기"
 tags: spring
-categories: spring
+categories:
+  - Spring
 use_math: true
 ---
 

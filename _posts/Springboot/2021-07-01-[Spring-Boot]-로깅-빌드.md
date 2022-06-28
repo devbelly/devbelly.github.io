@@ -1,7 +1,8 @@
 ---
 title: "[Spring Boot] 로깅 / 빌드"
 tags: springboot
-categories: springboot
+categories:
+  - Spring boot
 use_math: true
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: "[Spring Boot] JPA"
 tags: springboot
-categories: springboot
+categories:
+  - Spring boot
 use_math: true
 ---
 
