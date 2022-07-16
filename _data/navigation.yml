@@ -28,6 +28,8 @@ categories:
     url: /categories/spring/
   - title: "Spring boot"
     url: /categories/spring-boot/
+  - title: "Spring Security"
+    url: /categories/spring-security/
 # categories:
 #   - title: "C/C++"
 #     url: /categories/c-cpp/
