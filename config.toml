@@ -101,8 +101,8 @@ home = ["HTML", "JSON", "RSS"]
 category = "categories"
 tag = "tags"
 
-# [markup]
-#     [markup.goldmark.renderer]
-#       hardWraps = false
-#       unsafe = true
-#       xhtml = false
+[markup]
+    [markup.goldmark.renderer]
+      hardWraps = false
+      unsafe = true
+      xhtml = false
