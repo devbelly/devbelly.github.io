@@ -1,0 +1,29 @@
+{{ define "main" }}
+    <main class="posts">
+
+        {{ partial "breadcrumb.html" . }}
+
+        <h1>{{ .Title }}</h1>
+
+        {{- if .Content }}
+            <div class="content">{{ .Content }}</div>
+        {{- end }}
+
+        {{- range .Data.Pages.GroupByDate "0" }}
+            <div class="posts-group">
+
+                <ul class="posts-list">
+                    {{- range .Pages }}
+                        <li class="post-item">
+                            <a href="{{.Permalink}}">
+                                <span
+                                    class="post-title">{{.Title}}<span
+                                    	class="badge">{{ .Site.Taxonomies.tags.Count (lower .Title)}}</span></span>
+                            </a>
+                        </li>
+                    {{- end }}
+                </ul>
+            </div>
+        {{- end }}
+    </main>
+{{ end }}

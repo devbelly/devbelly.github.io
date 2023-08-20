@@ -1,0 +1,17 @@
+<footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Copyright &copy; {{ now.Format "2006" }}</span>
+            {{ if .Site.Author.name }}
+                <span><a href="{{ .Site.BaseURL }}">{{ .Site.Author.name }}</a></span>
+            {{ end }}
+            <span>{{ .Site.Copyright| safeHTML }}</span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Theme made with <a href="https://atlialp.com/">rhazdon</a></span>
+        </div>
+    </div>
+</footer>

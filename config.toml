@@ -1,0 +1,108 @@
+baseurl = "https://devbelly.github.io"
+languageCode = "ko-kr"
+DefaultContentLanguage = "ko"
+theme = "hello-friend-ng"
+favicon = "favicon.ico"
+enableEmoji = true
+# googleAnalytics = ""
+canonifyurls = true
+enableRobotsTXT = true
+
+# sitemap 생성
+[sitemap]
+# always, hourly daily, weekly, monthly, yearly, never
+  changefreq = "monthly"
+  filename = "sitemap.xml"
+  priority = 0.5
+
+
+
+[author]
+name = "devbelly"
+
+[outputs]
+home = ["HTML", "JSON", "RSS"]
+
+[params]
+  dateform        = "Jan 2, 2006"
+  dateformShort   = "Jan 2"
+  dateformNum     = "2006-01-02"
+  dateformNumTime = "2006-01-02 15:04 -0700"
+
+  # Metadata mostly used in document's head
+  description = "기록"
+  keywords = "blog, development, programming, tech, python, javascript, golang, go, postgresql, devops, elasticsearch, fluend, kubernetes, docker, aws"
+  images = [""]
+  
+  # Directory name of your blog content (default is `content/posts`)
+  contentTypeName = "posts"
+  # Default theme "light" or "dark"
+  defaultTheme = "light"
+  comments = true
+  enableThemeToggle = false
+
+  
+  customCSS=['/css/main.css']
+  customJS = ['/js/anchorforid.js', '/js/main.js']
+  
+[params.footer]
+  trademark = true
+  rss = false
+  copyright = true
+  author = true
+  topText = []
+  bottomText = [
+    "Powered by <a href=\"http://gohugo.io\">Hugo</a>",
+    "Theme by <a href=\"https://github.com/rhazdon\">rhazdon</a>","<a href='https://creativecommons.org/licenses/by-nc/4.0/'>CC BY-NC 4.0</a>"
+  ]
+
+# [params.portrait]
+#   path     = "/img/devbelly-bg.jpeg"
+#   alt      = "Portrait"
+#   maxWidth = "180px"
+[[params.social]]
+  name = "email"
+  url = "mailto:devbelly@naver.com"
+[[params.social]]
+  name ="github"
+  url = "https://github.com/devbelly"
+[languages]
+  [languages.ko]
+    title = "개발 일기장"
+    homeSubtitle = "Somewhere for my assorted Projects & Posts"
+    keywords = "blog, development, programming, tech, python, javascript, golang, go, postgresql, devops, elasticsearch, fluend, kubernetes, docker, aws"
+    copyright = ""
+    readOtherPosts = "Read other posts"
+
+    [languages.ko.params.logo]
+      logoText = "개발 블로그"
+      logoHomeLink = "/"
+    # or
+    #
+    # path = "/img/your-example-logo.svg"
+    # alt = "Your example logo alt text"
+
+	# You can create a language based menu
+    [languages.ko.menu]
+      [[languages.ko.menu.main]]
+        identifier = "about"
+        name = "About"
+        url = "/about"
+      [[languages.ko.menu.main]]
+        identifier = "posts"
+        name = "Post"
+        url = "/posts"
+      [[languages.ko.menu.main]]
+        identifier = "tags"
+        name       = "Tag"
+        url        = "/tags"
+
+[taxonomies]
+category = "categories"
+tag = "tags"
+
+# [markup]
+#     [markup.goldmark.renderer]
+#       hardWraps = false
+#       unsafe = true
+#       xhtml = false
