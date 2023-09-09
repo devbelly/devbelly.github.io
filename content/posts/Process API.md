@@ -1,7 +1,7 @@
 ---
 title: Process API
 date: 2023-09-03T23:53:44+09:00
-draft: true
+draft: false
 comments: true
 toc: true
 tags:
