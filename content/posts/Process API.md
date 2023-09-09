@@ -1,11 +1,11 @@
 ---
-title: "Test"
+title: Process API
 date: 2023-09-03T23:53:44+09:00
 draft: true
 comments: true
 toc: true
 tags:
-  - untagged
+  - os
 ---
 안녕하세요. 이번시간에는 Process API에 대해 알아보겠습니다. 첫번째는 프로세스를 생성할 때 사용하는 `fork()`입니다. 
 
@@ -17,7 +17,7 @@ tags:
 
 <img width="518" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/f4110636-151b-4b08-99d2-e135730ce775">
 
-위 그림은 물리 메모리에서 하나의 부모 프로세스가 실행되는 모습입니다. 간단히 보기 위해 `kernel space`는 생략했습니다. 이때 `fork()`를 호출하면 물리 메모리에 부모 프로세스가 갖고 있는 정보를 거의 그대로 복사합니다. 
+위 그림은 물리 메모리에서 하나의 부모 프로세스가 실행되는 모습입니다.(물리 메모리가 이처럼 생기진 않았지만 설명을 위해 간단히 표현했습니다.) 간단히 보기 위해 `kernel space`는 생략했습니다. 이때 `fork()`를 호출하면 물리 메모리에 부모 프로세스가 갖고 있는 정보를 거의 그대로 복사합니다. 
 
 <img width="524" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/ca8c3906-3c97-4fe9-a689-01ee0acd3763">
 
@@ -70,9 +70,35 @@ tags:
 
 자식 프로세스가 스케줄링 되어 `exec`가 실행된 모습입니다. 기존 프로그램 코드였던 `p3.c` 대신 단어의 갯수를 세주는 `wc`이 로드된 것을 확인할 수 있습니다. 이때 `data`, `heap`, `stack` 영역도 초기화됩니다.
 
-exec 코드부터 만들기
+<img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/18495d18-3b7b-40cd-a5ee-c32348c77bc2">
 
-## 참고
+`exec`는 실행 인자로 `myargs[0]`를 사용하여 현재 프로그램이 `wc`로 바뀔 것을 알리고 어떠한 프로그램의 단어 갯수를 셀 것인지 `myargs`를 통해 전달하고 있습니다. 배열의 마지막 부분을 알리기 위해 `myargs[2]`에는 `NULL`을 표시한 것도 확인할 수 있습니다.
+
+자식 프로세스 입장에서는 현재 프로그램의 코드가 `wc`로 바뀌었으므로 `p3.c` 부분에 해당하는 `this shouldn't print out`은 출력되지 않습니다.
+
+## Why? Motivating the API
+
+프로세스를 `fork()`를 통해서 만들고 `exec()`코드를 변경하는 과정을 왜 분리했을까요? 이는 UNIX에서 `shell`을 통해 `fork()` 실행 이후와 `exec()`실행 사이에 코드를 실행함으로써 자식 프로세스의 실행환경을 변경할 수 있기 때문입니다.
+
+<img width="326" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/ccaa3929-89c4-40f2-833c-8386f6ae4b86">
+
+이 명령어는 `wc`의 실행인자로 `p3.c`를 받고나서 리다이렉션을 통해 `STDOUT`을 `newfile.txt`로 변경하는 명령어입니다. `shell`은 `fork()`이후 프로세스가 생성되었다면 해당 프로세스 내에 있는 `file descriptor table`의 1번 인덱스를 `exec`를 실행하기 전 `newfile.txt`로 변경함으로써 리다이렉션을 구현합니다. 리다이렉션 뿐만 아니라 파이프라인 또한 이와 유사하게 동작합니다. 즉, 이를 구분한 이유는 실행환경의 변경을 간단하게 할 수 있기 때문이라고 할 수 있겠습니다.
+
+## Copy on write(COW)
+
+지금까지 프로세스 API종류에 대해 살펴봤습니다. 잠깐 언급했지만 `fork`와 `exec`는 함께 자주 쓰이는 API들입니다. 프로세스가 실행되는 환경을 `fork`로 만들고 바로 `exec`로 새로운 코드 영역으로 초기화를 하는데, 한 가지 불편한 점은 `fork`입니다. `fork`를 하면 **물리 메모리**에 거의 동일한 내용으로 복사를 하여 프로세스를 생성한다고 말했는데요. `exec`와 함께 같이 쓰인다면 열심히 메모리 복사를 한 내용을 초기화 해버리므로 복사에 대한 오버헤드가 생기게 됩니다.
+
+이러한 문제를 극복하기 위해 `COW`을 사용하게 되었습니다. Copy on write. 말 그대로 `write`시에 복사를 진행한다는 건데 그림을 통해 살펴보겠습니다.
+
+<img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/08686c93-5201-4ac2-88ed-9b65c7e552d1">
+
+현재 1번 부모 프로세스가 `fork()`를 통해 2번 자식 프로세스를 생성한 직후의 모습을 나타낸 그림입니다. 맨 처음 설명했던 것처럼 물리메모리에 동일한 내용이 두 개 존재하는 것이 아니라 하나의 물리 메모리를 두개의 프로세스가 공유하고 있는 모습입니다.
+
+<img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/f632dc0b-9d67-4c9a-bb45-84505e7cc5b5">
+
+만약 어떠한 프로세스에 `write` 요청이 발생한다면 기존 물리 메모리를 수정하는 것이 아니라 `copy on write`, 즉 복사본을 생성하여 달라진 내용을 복사본에 반영하여 사용하게 됩니다. 이러한 최적화 기술을 통해 `fork()`시 발생하면 메모리에 대한 오버헤드를 줄일 수 있습니다.
+ 
+ ## 참고
 - https://courses.cs.washington.edu/courses/cse451/02sp/section/notes/fork/
 - https://www.youtube.com/watch?v=sA9NGMc2Kf8
 - https://wslog.dev/fork-exec
