@@ -1,5 +1,5 @@
 ---
-title: "Introduction to Operating Systems"
+title: Introduction to Operating Systems
 date: 2023-08-17T22:46:12+09:00
 draft: false
 toc: true
