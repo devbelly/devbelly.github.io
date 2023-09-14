@@ -62,11 +62,11 @@ SJF는 `non-preemptive` 스케줄러입니다. 이를 `preemptive` 버전으로 
 
 ## Response Time
 
-지금까지 모든 job이 CPU집약적인 연산을 수행하고 job의 소요 시간을 안다면 반환 시간 기준으로 STCF가 최적임을 살펴봤습니다. 하지만 이는 Performance에만 초점을 맞춘 스케줄러로써 만약 실행시간이 긴 job이 도착한 상황에서 계속 짧은 job들이 실행된다면 실행시간이 긴 job은 스케줄링되지 않는 `starvation` 현상이 일어납니다.
+지금까지 모든 job이 CPU집약적인 연산을 수행하고 job의 소요 시간을 안다면 반환 시간 기준으로 STCF가 최적임을 살펴봤습니다. 하지만 만약 실행시간이 긴 job이 도착한 상황에서 계속 짧은 job들이 실행된다면 실행시간이 긴 job은 스케줄링되지 않는 `starvation` 현상이 일어납니다.
 
 <img width="546" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/c344c5c2-f409-4e1d-a9fc-bdce18f6b5ea">
 
-이에 Fairness을 고려한 두 번째 메트릭인 Response time이 등장했습니다. 반응 시간은 도착 시간부터 첫 번째 실행까지 걸린 시간을 의미합니다. 
+이에 Performance의 두 번째  메트릭인 Response time이 등장했습니다. 반응 시간은 도착 시간부터 첫 번째 실행까지 걸린 시간을 의미합니다. 
 ## Round Robin
 
 반응 시간을 기준으로 좋게 평가 받는 스케줄러가 Round Robin입니다. timer interrupt를 통해 시분할 시스템을 구현하며 프로세스들 사이에 우선순위를 두지 않고 일정 시간단위로 CPU를 할당하는 방식의 스케줄러입니다.
@@ -78,8 +78,6 @@ SJF는 `non-preemptive` 스케줄러입니다. 이를 `preemptive` 버전으로 
 `Figure 7.7`에서는 이를 개선한 Round Robin을 사용했습니다. 각 job의 반응 시간은 0, 1, 2로 평균 반응 시간이 1로 크게 개선이 된 모습입니다. 다만 위 그림에서 표시하지 않은 부분이 있는데 이전 글에서 살펴본 Context Switching 비용입니다. RR에서 context switching을 빨리 할수록 반응 시간이 빨리지지만 레지스터를 바꾸는 컨텍스트 스위칭 비용과 메모리에 현재 실행중인 프로세스를 위한 것들 또한 바뀌어야하는 오버헤드가 발생합니다. 즉, 적절하게 설정해주는 것이 중요합니다.
 
 <img width="546" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/8735c5ab-8623-48f3-88b1-202c9f4d5895">
-
-또한 Performance와 Fairness는 종종 `trade-off`관계를 이룬다고 했는데 `Figure:7.7`에서는 Response time이 감소했지만 Turnaround time은 14로 크게 증가한 것도 관찰가능합니다.
 
 ## Incorporating I/O
 
