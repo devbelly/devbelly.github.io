@@ -5,7 +5,7 @@ draft: false
 type: "about"
 ---
 
-**E-mail**: [devbelly@gmail.com](mailto:devbelly@naver.com)
+**E-mail**: [devbelly@naver.com](mailto:devbelly@naver.com)
 
 **Github**: https://github.com/devbelly
 
