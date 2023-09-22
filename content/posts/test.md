@@ -7,9 +7,14 @@ toc: true
 tags:
   - untagged
 ---
-안녕하세요. 이번 시간에는 주소 변환에 대해 살펴보겠습니다. CPU virtualization를 위해서 OS는 효율성과 제어 두가지 측면을 고려해야 했습니다. 때문에 `Limited Direct Execution`을 개발했고 프로세스는 CPU 하드웨어에서 `Direct`하게 실행되지만 특정 시점에 OS가 개입하여 프로세스가 할 수 있는 동작에 `limited`를 두었습니다. 
+안녕하세요. 이번 시간에는 주소 변환에 대해 살펴보겠습니다. 
 
-마찬가지로 Memory Virtualization은 `hardware based address translation`, 줄여서 `address translation` 을 통해 구현가능합니다.  주소 변환을 사용하면 하드웨어가 각 메모리 엑세스를 변환하여 명령어가 제공하는 `Virtual Address`를 `Physical Address`로 변환해줍니다. 따라서 모든 메모리 참조에 대해 하드웨어에서 주소 변환을 수행하여 애플리케이션 메모리 참조를 메모리 내 실제 위치로 리디렉션합니다.
+CPU virtualization를 위해서 OS는 효율성과 제어 두가지 측면을 고려해야 했습니다. 때문에 `Limited Direct Execution`을 개발했고 프로세스는 CPU 하드웨어에서 `Direct`하게 실행되지만 특정 시점에 OS가 개입하여 프로세스가 할 수 있는 동작에 `limited`를 두었습니다.  
+
+마찬가지로 Memory Virtualization은 `hardware based address translation`, 줄여서 `address translation` 을 통해 구현가능합니다.  실행 파일 안에 있는 주소들은 모드 `Virtual Address`입니다. 따라서 CPU에서 다루는 주소도 `VA`이고 실제 명령어 수행을 위해 물리 메모리에 접근할 때는 `Physical Address`로 변환되어야 합니다. 이때 변환을 하드웨어를 통해 이루어집니다.
+
+이렇게 Memory Virtualization을 통해서 프로세스는 자신이 메모리를 독점하고 있다는`beautiful illustion`을 얻게 됩니다. 개발자는 환상에 대한 혜택을 누리게 되지요. 예를 들면 배열을 선언할 때 `배열이 크다면 다른 프로세스의 메모리 영역을 침범할까?`와 같은 고려를 하지 않기 때문입니다. 내가 선언한 변수나 자료구조는 내가 작성한 코드에서만 접근한다고 가정합니다.
+
 
 이번 글에서는 아래 과정을 어떻게 해결해나가는지 살펴보겠습니다.
 
@@ -22,7 +27,7 @@ Of course, the hardware alone cannot virtualize memory, as it just pro- vides th
 
 하드웨어만으론 VM을 제공할 수 없고 OS가 메모리들에 대해서 관리를 해주어야 최종적으로 VM을 제공할 수 있다.
 
-Memory Virtualization을 통해서 프로세스가 메모리를 독점하고 있다는 환상을 제공하는 것이 최종 목표입니다. 소스코드를 작성하면서 이러한 환상에 대한 혜택을 누리고 있습니다. 내가 선언하는 배열이 다른 프로세스의 범위를 넘어설까 걱정하지 않기 때문입니다. 어쨋든 OS는 하드웨어의 도움을 받아 아름다운 가상의 메모리를 제공한다.
+
 
 ## Assumption
 
@@ -36,8 +41,26 @@ Memory Virtualization 어떻게 변화했는지 살펴보기 위해 아래와 �
 
 ## An Example
 
-예제는 메모리에 하나으 ㅣ변수가 선언되어ㅣㅇㅆ고 증가하고 다시 저장하는 역할을 하는 코드
-어셈블리로 살펴보면 다음과 같다.
+<img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/48011b94-9750-4e47-8116-c955a51a7021">
+변수 `x`를 선언한 후 3을 증가시키는 코드입니다. 위 코드를 어셈블리로 살펴볼까요?
+
+<img width="542" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/e51e6ef3-e2b6-456a-ab1b-633cb01f23ea">
+변수 `x`는 `ebx` 레지스터에 저장되어 있다고 가정하겠습니다. 처음에는 `ebx`에서 `0x0`만큼 떨어진 메모리에 접근하여 값을 읽어 `eax` 레지스터에 저장합니다. `eax` 레지스터에 3을 더한 후 다시 `ebx`에서 `0x0`만큼 떨어진 메모리에 연산한 값을 저장하고 있습니다.  Address Space 상에서 코드와 데이터들은 어떤 식으로 저장되어있는지 보겠습니다.
+
+<img width="262" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/6ae5f85a-2f66-4b5d-bdd7-d303ab88eebc">
+프로세스는 자신이 메모리를 독점하고 있다고 생각하므로 0KB부터 필요한 데이터들을 저장합니다. 프로그램 코드는 0KB 근처에 저장하고 변수 `x`는 스택 근처인 15KB에 저장합니다. 만약 프로그램이 실행 된다면 다음과 같은 순서일 것입니다.
+
+- 128번지에 있는 명령어를 Fetch 한다
+- 물리 메모리(15KB)에 접근하여 LOAD 명령어를 Execute 한다.
+- 132번지에 있는 명령어를 Fetch 한다
+- `eax`레지스터에 있는 값을 3 증가시킨다 (이때는 물리 메모리에 대한 접근이 없다.)
+- 135번지에 있는 명령어를 Fetch 한다.
+- 물리 메모리(15KB)에 접근하여 STORE 명령어를 Execute 한다.
+
+프로세스는 가상 주소를 다루지만 결국에는 물리 주소로 변환을 해야합니다.
+
+
+
 
 ~설명~
 
