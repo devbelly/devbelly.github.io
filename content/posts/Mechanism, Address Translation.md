@@ -138,5 +138,5 @@ base & bound는 초기 형태인 만큼 단점이 존재합니다. 실제로 메
 Limited Direct Execution
 - https://www.chegg.com/flashcards/chapter-6-mechanism-limited-direct-execution-945601e8-979b-4afe-b4ee-6ea0b775e505/deck
 
-static binding, runtime binding
+Static binding, runtime binding
 - https://medium.com/@danny4410.eecs04/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E7%AD%86%E8%A8%98-memory-5be6f0e66de4
