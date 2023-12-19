@@ -81,14 +81,14 @@ PC가 `main()`을 가리키고 있으므로 코드를 수행하다가 자신이 
 
 3, 4번 과정에서는 프로세스가 실행되고 timer interrupt가 발생합니다. 현재 CPU의 레지스터를 `kernel stack(A)`에 저장한 후 Trap이 발생했으므로 CPU를 `kernel mode`로 변경합니다.
 
-5번과정은 자신이 Trap이 걸린 이유를 파악하고 timer에 의해 interrupt가 걸렸다는 것을 알게 됩니다. OS의 스케줄러가 다음에 실행할 프로세스를 결정하면 현재 CPU의 레지스터를 Process Control Block(PCB)안Context에 저장한 후 프로세스 B의 PCB안 Context를 현재 CPU의 레지스터로 복원합니다.
+5번과정은 자신이 Trap이 걸린 이유를 파악하고 timer에 의해 interrupt가 걸렸다는 것을 알게 됩니다. OS의 스케줄러가 다음에 실행할 프로세스를 결정하면 현재 CPU의 레지스터를 Process Control Block(PCB)안 Context에 저장한 후 프로세스 B의 PCB안 Context를 현재 CPU의 레지스터로 복원합니다.
 
 여기서 그림만으로는 조금 이해하기 어려운 것이 있는데 바로 4번의 `save regs(A) → k-stack(A)`와 5번의 
 `save regs(A) → proc_t(A)`입니다. 왜 CPU 레지스터값을 두번이나 저장하는 걸까요? 그 이유는 **대부분**의 정보를 `kernel stack`에 저장할 뿐 모든 정보를 저장하진 않습니다. 그렇다면 무엇을 저장하지 않을까요? 바로 **kernel stack**의 메모리 주소입니다.
 
 <img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/c83ce731-51e8-4e5b-b544-f4415ba0bd9e">
 
-이 그림에서 4번 과정을 나타낸 것입니다. `user mode` 상태의 레지스터를 `kernel-stack(A)`에 저장하고 있습니다. `kernel stack`의  시작 주소가  6000임을 눈여겨 봅시다.
+이 그림은 4번 과정을 나타낸 것입니다. `user mode` 상태의 레지스터를 `kernel-stack(A)`에 저장하고 있습니다. `kernel stack`의  시작 주소가  6000임을 눈여겨 봅시다.
 
 <img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/fce98fbe-fc5d-454f-93ec-0f838e072032">
 

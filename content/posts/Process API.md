@@ -96,7 +96,7 @@ tags:
 
 <img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/f632dc0b-9d67-4c9a-bb45-84505e7cc5b5">
 
-만약 어떠한 프로세스에 `write` 요청이 발생한다면 기존 물리 메모리를 수정하는 것이 아니라 `copy on write`, 즉 복사본을 생성하여 달라진 내용을 복사본에 반영하여 사용하게 됩니다. 이러한 최적화 기술을 통해 `fork()`시 발생하면 메모리에 대한 오버헤드를 줄일 수 있습니다.
+만약 어떠한 프로세스에 `write` 요청이 발생한다면 기존 물리 메모리를 수정하는 것이 아니라 `copy on write`, 즉 복사본을 생성하여 달라진 내용을 복사본에 반영하여 사용하게 됩니다. 이러한 최적화 기술을 통해 `fork()`시 발생하던 메모리에 대한 오버헤드를 줄일 수 있습니다.
  
  ## 참고
 - https://courses.cs.washington.edu/courses/cse451/02sp/section/notes/fork/
