@@ -118,6 +118,8 @@ stride scheduling에서 공정하게 스케줄링하기 위해 현재까지 사�
 
 <img width="418" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/9f7383d0-018e-47b7-9be8-7aaba004a493">
 
+왜 실제 실행시간 대신 `vruntime`을 사용할까요? 커널 입장에서는 할당된 `time-slice`만큼 사용했으니 다음 스케줄링에서 프로세스를 공평하게 보기 위해서입니다. 가중치가 커서 실제 실행시간(`runtime`)이 길더라도 `vruntime`에 증가되는 값은 작은 것을 알 수 있고 가중치가 작아 실제 실행시간이 짧더라도 `vruntime`에 증가되는 값은 큰 것을 알 수 있습니다. 즉, `vruntime`의 값이 비슷해지므로 다음 스케줄링에서 두 프로세스의 입지가 비슷해집니다. 
+
 ## Other Features
 
 CFS는 효율적인 구현을 위해 다양한 방법들을 사용합니다. ***현재 실행중인*** 프로세스를 추적하기 위해 단순한 큐가 아닌 Red-Black-Tree를 활용해 수천개의 프로세스 내에서 빠른 속도로 프로세스들을 관리하도록 도와줍니다. 
