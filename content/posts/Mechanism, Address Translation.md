@@ -11,7 +11,7 @@ tags:
 
 CPU Virtualization를 위해서 OS는 효율성과 제어 두가지 측면을 고려해야 했습니다. 때문에 `Limited Direct Execution`을 개발했고 프로세스는 CPU 하드웨어에서 `Direct`하게 실행되지만 특정 시점에 OS가 개입하여 프로세스가 할 수 있는 동작에 `limited`를 두었습니다.  
 
-마찬가지로 Memory Virtualization은 `hardware based address translation`, 줄여서 `address translation` 을 통해 구현가능합니다.  실행 파일 안에 있는 주소들은 모두 `Virtual Address`로 이루어져 있습니다.  따라서 CPU에서 다루는 주소도 `VA`이고 실제 명령어 수행을 위해 물리 메모리에 접근할 때도 `Physical Address`로 변환되어야 합니다. 이때 변환은 하드웨어를 통해 이루어집니다.
+마찬가지로 Memory Virtualization은 `hardware based address translation`, 줄여서 `address translation` 을 통해 구현가능합니다.  실행 파일 안에 있는 주소들은 모두 `Virtual Address`로 이루어져 있습니다.  따라서 CPU에서 다루는 주소도 `VA`이고 실제 명령어 수행을 위해 물리 메모리에 접근할 때`Physical Address`로 변환되어야 합니다. 이때 변환은 하드웨어를 통해 이루어집니다.
 
 이렇게 Memory Virtualization을 통해서 프로세스는 자신이 메모리를 독점하고 있다는`beautiful illustion`을 얻게 됩니다. 개발자는 이러한 환상에 대해 혜택을 누리게 되지요. 예를 들면 배열을 선언할 때 `배열이 크다면 다른 프로세스의 메모리 영역을 침범할까?`와 같은 고려를 하지 않기 때문입니다. 내가 선언한 변수나 자료구조는 내가 작성한 코드에서만 접근한다고 가정합니다.
 
@@ -45,14 +45,17 @@ Memory Virtualization이 어떻게 변화했는지 살펴보기 위해 아래와
 프로세스는 자신이 메모리를 독점하고 있다고 생각하므로 0KB부터 필요한 데이터들을 저장합니다. 프로그램 코드는 0KB 근처에 저장하고 변수 `x`는 스택 근처인 15KB에 저장합니다. 만약 프로그램이 실행 된다면 다음과 같은 순서일 것입니다. 
 
 - 128번지에 있는 명령어를 fetch 한다
-- 물리 메모리(15KB)에 접근하여 LOAD 명령어를 Execute 한다.
+- 15KB에 접근하여 LOAD 명령어를 Execute 한다.
 - 132번지에 있는 명령어를 Fetch 한다
 - `eax`레지스터에 있는 값을 3 증가시킨다 (이때는 물리 메모리에 대한 접근이 없다.)
 - 135번지에 있는 명령어를 Fetch 한다.
-- 물리 메모리(15KB)에 접근하여 STORE 명령어를 Execute 한다.
+- 15KB에 접근하여 STORE 명령어를 Execute 한다.
 
-프로세스는 가상 주소를 다루지만 결국에는 물리 메모리에 접근하는 것을 알 수 있습니다. 일반적으로 데이터에 대한 가상 메모리를 물리 메모리로 바인딩 하는 과정은 아래 3단계 중 한 군데에서 이루어집니다.
+<img width="374" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/0d9247d9-21f2-49b5-acb1-3a005b4f6b6e">
 
+프로그램 관점에서는 주소 공간이 0KB부터 16KB까지 존재하는 것으로 생각합니다. 하지만 가상화를 하려면 OS는 프로세스를 물리 메모리의 다른 곳에 재배치해야합니다. 위 그림에서 프로세스가 물리 메모리에 어떻게 재배치 되었는지 확인할 수 있습니다.
+
+프로세스는 가상 주소를 다루지만 결국에는 물리 메모리에 접근하는 것을 알 수 있습니다. 일반적으로 데이터에 대한 가상 메모리를 물리 메모리로 바인딩하는 과정은 아래 3단계 중 한 군데에서 이루어집니다.
 
 <img width="336" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/87503051-9785-4904-b21b-250d05d1bd6c">
 
