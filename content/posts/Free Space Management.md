@@ -24,7 +24,7 @@ tags:
 
 <img width="346" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/c24daaca-6559-4a31-bb8b-ba80cc0b3036">
 
-이를 free list로 표현한 모습입니다. 10바이트가 넘는 요청 대신 10바이트 보다 적은 요청이 온다면 어떻게 될까요? 단일 바이트를 요청해보겠습니다. 이 경우 allocator는 splitting을 수행합니다. splitting은 요청을 만족할 수 있는 청크를 찾아서 둘로 나눕니다. 단일 바이트 요청을 만족할 수 있는 청크는 첫 번째, 두 번째 모두 가능하고 만약 두 번째 청크를 선택했다면 splitting 결과는 다음과 같습니다.
+이를 free list로 표현한 모습입니다. 10바이트가 넘는 요청 대신 10바이트 보다 작은 요청이 온다면 어떻게 될까요? 단일 바이트를 요청해보겠습니다. 이 경우 allocator는 splitting을 수행합니다. splitting은 요청을 만족할 수 있는 청크를 찾아서 둘로 나눕니다. 단일 바이트 요청을 만족할 수 있는 청크는 첫 번째, 두 번째 모두 가능하고 만약 두 번째 청크를 선택했다면 splitting 결과는 다음과 같습니다.
 
 <img width="348" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/73011e6c-7c6b-46dc-9f37-8997835c1073">
 
@@ -54,7 +54,7 @@ free list는 실제로 어떤 식으로 존재하는지 살펴보겠습니다.
 
 <img width="478" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/7daf9a0f-a122-4e26-8182-5ab25e7bc12c">
 
-이제 100바이트를 요청해보겠습니다. 요청을 처리할 수 있는 청크는 하나이고 splitting을 통해 100+8(헤더)바이트와 나머지 공간으로 나뉘게 됩니다. `malloc()`을 사용한 클라이언트에는 `ptr`을 반환합니다. 남아있는 청크의 크기는 `4088-108 = 3980` 임을 알 수 있습니다. 
+이제 100바이트를 요청해보겠습니다. 요청을 처리할 수 있는청크는 하나이고 splitting을 통해 100+8(헤더)바이트와 나머지 공간으로 나뉘게 됩니다. `malloc()`을 사용한 클라이언트에는 `ptr`을 반환합니다. 남아있는 청크의 크기는 `4088-108 = 3980` 임을 알 수 있습니다. 
 
 <img width="740" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/fd8a925c-1f18-44f7-927c-011d72b4f57a">
 
@@ -73,7 +73,7 @@ Best Fit의 정반대 전략입니다. 선택한 청크 중 남아있는 공간�
 
 ### First Fit
 
-이전 두 방법들은 적절한 청크를 찾기 위해 exhaustive search를 해야하므로 효율성이 떨어집니다. 따라서 First Fit은 free list의 앞에서 부터 청크를 검사하다가 할당이 가능한 빈 청크를 찾는다면 search를 멈추고 해당 청크를 통해 메모리를 할당하는 전략입니다. 
+이전 두 방법들은 적절한 청크를 찾기 위해 exhaustive search를 해야하므로 효율성이 떨어집니다. 따라서 First Fit은 free list의 앞에서부터 청크를 검사하다가 할당이 가능한 빈 청크를 찾는다면 search를 멈추고 해당 청크를 통해 메모리를 할당하는 전략입니다. 
 
 하지만 이 방법은 free list의 앞 부분에 external fragmentation이 심해집니다. 따라서 이 문제를 완화하기 위해 free list를 관리할 때 address-based ordering을 사용합니다. allocator은 Coalescing을 할 때 주변 노드를 살펴보는데 만약 address-based ordering이 되어있다면 Coalescing할 기회가 더욱 많아지므로 fragmentation이 줄어듭니다.
 
