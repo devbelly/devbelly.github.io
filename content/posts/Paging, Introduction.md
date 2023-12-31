@@ -15,17 +15,17 @@ Paging은 프로세스의 address space를 가변 크기의 논리적 세그먼�
 
 <img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/e06bfa51-0cbd-44eb-9700-bfa156dd781c">
 
-각 address space의 vitual page가 물리 메모리의 어디에 배치되었는지 기록하기 위해 운영 체제는 페이지 테이블을 가집니다. 대부분의 페이지 테이블은 per-process 입니다 (예외, Inverted page table). 만약 다른 프로세스가 실행된다면 virtual page는 다른 물리 페이지에 매핑되므로 운영체제는 이를 위해 다른 페이지 테이블을 사용해야합니다.
+각 address space의 vitual page가 물리 메모리의 어디에 배치되었는지 기록하기 위해 운영체제는 페이지 테이블을 관리합니다. 대부분의 페이지 테이블은 per-process 입니다 (예외, Inverted page table). 만약 다른 프로세스가 실행된다면 virtual page는 다른 물리 페이지에 매핑되므로 운영체제는 이를 위해 다른 페이지 테이블을 사용해야합니다.
 
 <img width="482" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/72449fdf-3818-4e79-b57f-acbb932a77c2">
 
 실제로 페이지 테이블을 다루는 과정을 살펴보겠습니다. address space의 크기가 64바이트라면 virtual address는 6비트로 표현가능합니다. 이 가상 주소가 어떤 물리 메모리의 프레임에 속하는지 알기 위해선 가상  주소를 두 부분으로 나눠야 합니다. 두 부분을 각각 VPN, offset이라 합니다.
 
-페이지의 크기가 예시에선 16바이트이므로 4개의 페이지를 선택할 수 있어야합니다. 그래서 최상위 2비트를 VPN으로 사용하고 남은 비트를 offset으로 사용합니다. 만약 가상 주소가 21이라면 VPN과 offset은 다음과 같을 것입니다.
+페이지의 크기가 예시에선 16바이트이므로 4개의 page가 존재합니다. 그래서 최상위 2비트를 VPN으로 사용하고 남은 비트를 offset으로 사용합니다. 만약 가상 주소가 21이라면 VPN과 offset은 다음과 같을 것입니다.
 
 <img width="264" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/657c4fda-4925-4886-9a64-a1feb0be0e47">
 
-이제 주소변환정보인 페이지 테이블을 확인할 차례입니다. `VPN 1 → PF 7` 이므로 물리 메모리의 7번 프레임과1번 페이지가 매핑됩니다. MMU의 도움을 받아 변환해볼까요?
+이제 주소변환정보인 페이지 테이블을 확인할 차례입니다. `VPN 1 → PF 7` 이므로 물리 메모리의 7번 프레임과 1번 페이지가 매핑됩니다. MMU의 도움을 받아 변환해볼까요?
 
 <img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/cae71ca6-c52d-4719-b20f-c1afa1200198">
 
@@ -88,7 +88,7 @@ PTBR과 VPN을 통해 배열처럼 direct indexing을 할 수 있습니다. PTE�
 PTE에서 PFN을 얻어 어떤 프레임에 속한지 확인했으니 PFN과 offset을 OR 연산을 통해 물리 메모리의 주소를 구할 수 있습니다. 그리고 해당 물리 메모리에 접근하면 원하는 값을 얻어 `eax` 레지스터에  값을 넣는 `movl` 연산을 수행할 수 있습니다.
 
 위 과정을 통해 해결해야할 문제 두가지를 알 수 있습니다.
-- VA를 tranlsation하는 과정에서 물리 메모리에 자주 접근한다.
+- VA를 tranlsation하는 과정에서 물리 메모리에 너무 자주 접근한다.
 - 페이지 테이블의 크기가 너무 크다.
 
 ## Summary
