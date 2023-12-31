@@ -11,7 +11,7 @@ tags:
 
 <img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/d154ce7a-9718-4133-a55b-cc939b98103f">
 
-Paging은 프로세스의 address space를 가변 크기의 논리적 세그먼트(코드, 힙, 스택)로 나누는 대신, **각각을 page라고 부르는 고정된 크기의 단위로 나눕니다.** 이러한 단위를 page라고 하며 물리 메모리의 frame이라 부르는 고정된 크기의 슬롯 배열에 배치합니다.
+Paging은 프로세스의 address space를 가변 크기의 논리적 세그먼트(코드, 힙, 스택)로 나누는 대신, **각각을 page라고 부르는 고정된 크기의 단위로 나눕니다.** 이러한 page를 물리 메모리의 frame이라 부르는 고정된 크기의 슬롯 배열에 배치합니다.
 
 <img width="630" alt="image" src="https://github.com/devbelly/image-issue/assets/67682840/e06bfa51-0cbd-44eb-9700-bfa156dd781c">
 
