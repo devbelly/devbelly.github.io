@@ -8,6 +8,10 @@ enableEmoji = true
 canonifyurls = true
 enableRobotsTXT = true
 
+# https://github.com/rhazdon/hugo-theme-hello-friend-ng/issues/293
+PygmentsCodeFences = false
+PygmentsStyle = ""
+
 # sitemap 생성
 [sitemap]
 # always, hourly daily, weekly, monthly, yearly, never
@@ -40,11 +44,13 @@ home = ["HTML", "JSON", "RSS"]
   defaultTheme = "light"
   comments = true
   enableThemeToggle = false
-
+  
+  # customCSS=['/css/main.css','/css/prism.css']
+  # customJS = ['/js/anchorforid.js', '/js/main.js','/js/prism.js']
   
   customCSS=['/css/main.css']
   customJS = ['/js/anchorforid.js', '/js/main.js']
-  
+
 [params.footer]
   trademark = true
   rss = false
