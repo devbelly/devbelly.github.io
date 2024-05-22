@@ -19,7 +19,7 @@ PygmentsStyle = ""
   filename = "sitemap.xml"
   priority = 0.5
 
-
+disableRSS     = false
 
 [author]
 name = "devbelly"
