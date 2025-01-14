@@ -117,6 +117,8 @@ fun main() = runBlocking {
 - [조세영의 Kotlin World](https://kotlinworld.com/)
 - [Coroutine IO Dispatcher의 Thread number가 최대 Thread 갯수를 초과하는 이슈](https://sandn.tistory.com/112)
 - [빙티의 코틀린 코루틴 동작방식](https://www.youtube.com/watch?v=iy-ouIRGDOY)
+- [OOM 해결 및 처리 성능 개선 경험](https://hyos-dev-log.tistory.com/38)
+
 
 
 
