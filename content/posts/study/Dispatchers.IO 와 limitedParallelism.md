@@ -70,80 +70,43 @@ Running on thread: DefaultDispatcher-worker-29
 
 <br>
 
-## 예상 원인 2, Dispatchers.IO
-
+## 예상 원인 2, Continuation
 <img width="796" alt="image" src="https://github.com/user-attachments/assets/0ad336b5-15fb-460c-87a8-59fda8439266">
 
 Dispatcher에는 대표적으로 Main, IO, Default가 있습니다. 그 중에서 `Dispatchers.IO`는 네트워크/DB 입출력이 있는 작업들에 대해 코루틴을 적절한 Thread로 할당하는 역할을 합니다. 즉, 우리가 CoroutineDispatcher에 코루틴을 보내기만 하면, CoroutineDispatcher은 자신이 사용할 수 있는 스레드가 있을 때 코루틴을 **스레드로** 보내 실행시킵니다.
 
 <br>
 
+그렇다면 코루틴은 어디에 저장되어있을까요? 아래 코드를 실행한 뒤, 힙 덤프를 분석해 보겠습니다.
+
 ```kotlin
 fun main() = runBlocking {  
-    repeat(1000) {  
+    repeat(100000) {  
         launch(Dispatchers.IO) {  
             Thread.sleep(200)  
+            withContext(Dispatchers.IO) {  
+                println("withContext Running on thread: ${Thread.currentThread().name}")  
+            }  
   
             val threadName = Thread.currentThread().name  
             println("Running on thread: $threadName")  
         }  
-    }
-}
-/**
-Running on thread: DefaultDispatcher-worker-38
-Running on thread: DefaultDispatcher-worker-27
-Running on thread: DefaultDispatcher-worker-68
-Running on thread: DefaultDispatcher-worker-12
-Running on thread: DefaultDispatcher-worker-60
-Running on thread: DefaultDispatcher-worker-58
-...
-*/
+    }}
 ```
 
-`Dispatchers.IO`는 쓰레드 풀에서 최대 64개의 쓰레드를 사용하도록 제한되어있습니다. 64보다 큰 숫자가 보이는 이유는 `Default`와 `IO`가 쓰레드 풀을 공유하기 때문입니다. `Default`는 자신의 코어 갯수만큼 쓰레드를 사용하고 `IO`는 최대 64개를 사용하므로 쓰레드 풀에는 대략 76개의 쓰레드가 있습니다. 다만, `IO`에서 동시에 사용하는 쓰레드는 최대 64개 인 것은 변하지 않습니다.
+<img width="514" alt="image" src="https://github.com/user-attachments/assets/af165c51-7790-4776-9a0f-a3c8230121aa" />
 
-OOM이 발생하는 상황은 항상 `Dispatchers.IO`에서 동시에 사용되는 쓰레드의 수가 많아지면 발생했습니다. 동시에 실행되는 쓰레드 수를 줄여야겠다고 판단했습니다. 코틀린에서는 [limited-parallelism](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/limited-parallelism.html)을 통해 디스패처가 사용하는 쓰레드 수를 제한할 수 있습니다.
+분석 파일을 보면 `LimitedDispatcher` 이 `LockFreeTaskQueue`를 갖고 있고 해당 큐에는 `Continuation`이 저장되어있습니다. `Continuation`은 우리가 함수를 일시중단 했을 때 어디서부터 다시 실행할지 정보를 저장한 객체입니다. 정리하자면 코틀린은 우리가 작성한 코루틴을 CPS 스타일로 변경을 하고 `Continuation` 객체를 통해 하나의 스레드에서도 여러 코루틴을 실행가능하게 합니다. 
 
-```kotlin
-fun main() = runBlocking {  
-    repeat(1000) {  
-        launch(Dispatchers.IO) { 
-            println("IO  : running in thread ${Thread.currentThread().name}")  
-        }  
-    }
-}
-```
+<br>
 
-```
-IO  : running in thread DefaultDispatcher-worker-64 @coroutine#856
-IO  : running in thread DefaultDispatcher-worker-21 @coroutine#857
-IO  : running in thread DefaultDispatcher-worker-64 @coroutine#858
-IO  : running in thread DefaultDispatcher-worker-21 @coroutine#859
-IO  : running in thread DefaultDispatcher-worker-66 @coroutine#750
-```
+<img width="909" alt="image" src="https://github.com/user-attachments/assets/65258309-5659-4c9a-8a6d-162d42bf7b97" />
 
+`LimitedDispatchers`는 `parallelism` 만큼 워커 노드를 실행하는 것을 알 수 있습니다. [자체적인 큐](https://github.com/Kotlin/kotlinx.coroutines/blob/fed40ad1f9942d1b16be872cc555e08f965cf881/kotlinx-coroutines-core/common/src/internal/LockFreeTaskQueue.kt#L71)는 최대 $2^{30}$ 늘어날 수 있습니다.  따라서 예상할 수 있는 문제는 다음과 같습니다.
 
-```kotlin
-fun main() = runBlocking {  
-    val dispatcher = Dispatchers.IO.limitedParallelism(12)  
-    repeat(1000) {  
-        launch(dispatcher) { // will get dispatched to DefaultDispatcher  
-            println("Default  : running in thread ${Thread.currentThread().name}")  
-        }  
-    }
-}
-```
+> 너무 많은 코루틴이 생성되면 Heap에 Continuation 객체가 많이 저장되어 OOM 가능성이 있다.
 
-```
-IO  : running in thread DefaultDispatcher-worker-1 @coroutine#906
-IO  : running in thread DefaultDispatcher-worker-1 @coroutine#940
-IO  : running in thread DefaultDispatcher-worker-21 @coroutine#901
-IO  : running in thread DefaultDispatcher-worker-15 @coroutine#900
-IO  : running in thread DefaultDispatcher-worker-18 @coroutine#898
-IO  : running in thread DefaultDispatcher-worker-15 @coroutine#943
-```
-
-따라서 `limitedParallelism`을 사용해 동시에 실행되는 쓰레드 수를 12개로 제한하니 OOM 문제를 해결할 수 있었습니다. 
+이러한 문제를 해결하기 위해 동시에 실행되는 쓰레드 수를 줄여야겠다고 판단했습니다. 코틀린에서 제공하는 [limited-parallelism](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/limited-parallelism.html)을 통해 디스패처가 사용하는 쓰레드 수를 제한하여 문제를 해결할 수 있었습니다.
 
 <br>
 
@@ -153,6 +116,7 @@ IO  : running in thread DefaultDispatcher-worker-15 @coroutine#943
 - [Coroutine, Structured Concurrency](https://jowunnal.github.io/coroutines/android_structured_concurrency/)
 - [조세영의 Kotlin World](https://kotlinworld.com/)
 - [Coroutine IO Dispatcher의 Thread number가 최대 Thread 갯수를 초과하는 이슈](https://sandn.tistory.com/112)
+- [빙티의 코틀린 코루틴 동작방식](https://www.youtube.com/watch?v=iy-ouIRGDOY)
 
 
 
