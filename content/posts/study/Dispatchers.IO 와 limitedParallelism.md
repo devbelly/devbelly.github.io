@@ -106,9 +106,17 @@ fun main() = runBlocking {
 
 > 너무 많은 코루틴이 생성되면 Heap에 Continuation 객체가 많이 저장되어 OOM 가능성이 있다.
 
-이러한 문제를 해결하기 위해 동시에 실행되는 쓰레드 수를 줄여야겠다고 판단했습니다. 코틀린에서 제공하는 [limited-parallelism](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/limited-parallelism.html)을 통해 디스패처가 사용하는 쓰레드 수를 제한하여 문제를 해결할 수 있었습니다.
+하지만 Continuation의 크기는 80바이트이고 4GB 메모리를 가정했을 때, 5천만 개의 객체를 저장할 수 있습니다. 따라서 이 경우 또한 아니라고 생각했습니다.
 
 <br>
+# 예상 원인 3, 스레드
+
+당시에는 힙 덤프에 대한 개념을 몰라서 정확한 원인을 분석하진 못했습니다. 다만 문제 상황의 특징은 워커 노드의 번호가 점점 올라가고 일정 시간 내에 OOM 문제가 발생했습니다.
+
+따라서 동시에 실행되는 스레드가 너무 많은 것이 원인이라 생각했고 `limitedParallelism` 옵션을 사용하여 Dispatchers에서 사용하는 스레드 수를 제한했고, OOM 문제가 사라졌습니다.
+
+다음에 OOM 문제를 만나게 된다면 힙 덤프를 통해 제대로 분석해보겠습니다. 😇
+
 
 ## 참고
 
